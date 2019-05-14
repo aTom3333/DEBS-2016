@@ -1,9 +1,9 @@
-package fise2.hpp.ok.events;
+package fise2.hpp.ok.eventsIR;
 
 public interface Event {
     public Type getType();
 
     public enum Type {
-        COMMENT, POST, FRIENDSHIP, LIKE
+        COMMENT, FRIENDSHIP, LIKE, POST
     }
 }

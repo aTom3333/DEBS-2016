@@ -2,7 +2,7 @@ package fise2.hpp.ok.eventsIR;
 
 public class Comment implements Event {
 
-    public int ts;
+    public long ts;
     public int comment_id;
     public int user_id;
     public String comment;

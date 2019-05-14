@@ -4,7 +4,7 @@ import fise2.hpp.ok.interfaces.Event;
 
 public class Like implements Event {
 
-    public int ts;
+    public long ts;
     public int user_id;
     public int comment_id;
 

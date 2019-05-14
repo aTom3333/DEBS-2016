@@ -1,4 +1,4 @@
-package fise2.hpp.ok.eventsIR;
+package fise2.hpp.ok.interfaces;
 
 public interface Event {
     public Type getType();

@@ -10,17 +10,18 @@ public abstract class AbstractParser {
     private BufferedReader input;
 
     public AbstractParser(Reader reader) {
-        if(reader instanceof BufferedReader)
+        if (reader instanceof BufferedReader) {
             input = (BufferedReader) reader;
-        else
+        } else {
             input = new BufferedReader(reader);
+        }
     }
 
     protected String[] splitLine() throws IOException {
         String line = input.readLine();
         StringTokenizer tok = new StringTokenizer(line, "|", false);
         ArrayList<String> result = new ArrayList<>();
-        while(tok.hasMoreTokens()) {
+        while (tok.hasMoreTokens()) {
             result.add(tok.nextToken());
         }
 

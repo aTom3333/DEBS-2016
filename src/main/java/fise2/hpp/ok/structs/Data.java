@@ -9,6 +9,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Data {
+    private static Data instance = new Data();
+
+    private Data() {
+    }
+
+    public static Data instance() {
+        return instance;
+    }
 
     public Map<Integer, User> users = new HashMap<>();
 

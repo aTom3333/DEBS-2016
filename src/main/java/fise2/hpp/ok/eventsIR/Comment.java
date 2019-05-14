@@ -9,8 +9,8 @@ public class Comment implements Event {
     public int user_id;
     public String comment;
     public String user;
-    public int comment_replied;
-    public int post_replied;
+    public Integer comment_replied = null;
+    public Integer post_replied = null;
 
     @Override
     public Type getType() {

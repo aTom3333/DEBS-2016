@@ -5,11 +5,11 @@ import fise2.hpp.ok.structs.User;
 
 public class Post implements Answerable {
 
+    public long ts;
     public final String post;
-    public int ts;
     public User poster;
 
-    public Post(int ts, User poster, String post) {
+    public Post(long ts, User poster, String post) {
         this.ts = ts;
         this.poster = poster;
         this.post = post;

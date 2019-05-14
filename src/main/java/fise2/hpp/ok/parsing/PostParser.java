@@ -1,4 +1,4 @@
-package fise2.hpp.ok.parser;
+package fise2.hpp.ok.parsing;
 
 import fise2.hpp.ok.eventsIR.Post;
 

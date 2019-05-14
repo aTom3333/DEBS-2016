@@ -5,8 +5,8 @@ import fise2.hpp.ok.events.Post;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class Data {
     private static Data instance = new Data();
@@ -20,7 +20,7 @@ public class Data {
 
     public Map<Integer, User> users = new HashMap<>();
 
-    public Set<Post> posts = new TreeSet<>();
+    public SortedMap<Integer, Post> posts = new TreeMap<>();
 
     public Map<Integer, Comment> comments = new HashMap<>();
 

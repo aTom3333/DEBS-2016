@@ -1,8 +1,5 @@
 package fise2.hpp.ok.events;
 
-public class Friendship implements Event {
-    @Override
-    public Type getType() {
-        return Type.FRIENDSHIP;
-    }
+public class Friendship {
+    public int ts = 0;
 }

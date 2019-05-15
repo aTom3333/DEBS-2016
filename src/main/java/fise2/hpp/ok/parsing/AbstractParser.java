@@ -13,7 +13,7 @@ public abstract class AbstractParser {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     public AbstractParser(Reader reader) {
-        if (reader instanceof BufferedReader) {
+        if(reader instanceof BufferedReader) {
             input = (BufferedReader) reader;
         } else {
             input = new BufferedReader(reader);

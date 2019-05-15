@@ -13,7 +13,7 @@ public class CommentParser extends AbstractParser {
 
     public Comment getNext() throws IOException, ParseException {
         String s = input.readLine();
-        if (s == null) {
+        if (s == null || s.isEmpty()) {
             return null;
         }
 

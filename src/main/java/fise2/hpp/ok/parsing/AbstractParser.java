@@ -38,7 +38,7 @@ public abstract class AbstractParser {
         return result;
     }
 
-    protected static long stringToTS(String date) throws ParseException {
+    public static long stringToTS(String date) throws ParseException {
         Date d = sdf.parse(date);
         return d.getTime();
     }

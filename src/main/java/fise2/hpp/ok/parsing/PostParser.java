@@ -13,7 +13,7 @@ public class PostParser extends AbstractParser {
 
     public Post getNext() throws ParseException, IOException {
         String s = input.readLine();
-        if (s == null) {
+        if (s == null || s.isEmpty()) {
             return null;
         }
 
@@ -23,7 +23,7 @@ public class PostParser extends AbstractParser {
         post.post_id = Integer.valueOf(line[1]);
         post.user_id = Integer.valueOf(line[2]);
         post.post = line[3];
-        post.user = line[3];
+        post.user = line[4];
 
         return post;
     }

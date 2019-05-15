@@ -13,7 +13,7 @@ public class LikeParser extends AbstractParser {
 
     public Like getNext() throws IOException, ParseException {
         String s = input.readLine();
-        if (s == null) {
+        if (s == null || s.isEmpty()) {
             return null;
         }
 

@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
 public abstract class AbstractParser {
     protected BufferedReader input;
-    private static SimpleDateFormat sdf = new SimpleDateFormat();
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     public AbstractParser(Reader reader) {
         if (reader instanceof BufferedReader) {
@@ -25,14 +24,18 @@ public abstract class AbstractParser {
         return input.ready();
     }
 
-    protected String[] splitLine(String s) throws IOException {
+    protected static String[] splitLine(String s) {
         StringTokenizer tok = new StringTokenizer(s, "|", false);
-        ArrayList<String> result = new ArrayList<>();
-        while (tok.hasMoreTokens()) {
-            result.add(tok.nextToken());
-        }
+        String[] result = new String[tok.countTokens() + 1];
 
-        return (String[]) result.toArray();
+        int i = 0;
+        while(tok.hasMoreElements()) {
+            result[i++] = tok.nextToken();
+        }
+        if(result[result.length - 1] == null)
+            result[result.length - 1] = "";
+
+        return result;
     }
 
     protected static long stringToTS(String date) throws ParseException {

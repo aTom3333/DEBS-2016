@@ -28,15 +28,11 @@ public class CommentParser extends AbstractParser {
         comment.comment = line[3];
         comment.user = line[4];
 
-        try {
+        if(!line[5].isEmpty())
             comment.comment_replied = Integer.valueOf(line[5]);
-        } catch (NumberFormatException ignored) {
-        }
 
-        try {
+        if(!line[6].isEmpty())
             comment.post_replied = Integer.valueOf(line[6]);
-        } catch (NumberFormatException ignored) {
-        }
 
         return comment;
     }

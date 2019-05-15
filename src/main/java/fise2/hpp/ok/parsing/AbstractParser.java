@@ -1,12 +1,13 @@
 package fise2.hpp.ok.parsing;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
 
 public abstract class AbstractParser {
     protected BufferedReader input;
@@ -25,17 +26,7 @@ public abstract class AbstractParser {
     }
 
     protected static String[] splitLine(String s) {
-        StringTokenizer tok = new StringTokenizer(s, "|", false);
-        String[] result = new String[tok.countTokens() + 1];
-
-        int i = 0;
-        while(tok.hasMoreElements()) {
-            result[i++] = tok.nextToken();
-        }
-        if(result[result.length - 1] == null)
-            result[result.length - 1] = "";
-
-        return result;
+        return StringUtils.splitPreserveAllTokens(s, '|');
     }
 
     protected static long stringToTS(String date) throws ParseException {

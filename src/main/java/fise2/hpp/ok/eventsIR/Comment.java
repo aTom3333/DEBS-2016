@@ -16,4 +16,9 @@ public class Comment implements Event {
     public Type getType() {
         return Type.COMMENT;
     }
+
+    @Override
+    public long getTS() {
+        return ts;
+    }
 }

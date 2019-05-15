@@ -14,4 +14,9 @@ public class Post implements Event {
     public Type getType() {
         return Type.POST;
     }
+
+    @Override
+    public long getTS() {
+        return ts;
+    }
 }

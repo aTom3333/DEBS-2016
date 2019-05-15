@@ -12,8 +12,13 @@ public class CommentParser extends AbstractParser {
     }
 
     public Comment getNext() throws IOException, ParseException {
+        String s = input.readLine();
+        if (s == null) {
+            return null;
+        }
+
         Comment comment = new Comment();
-        String[] line = splitLine();
+        String[] line = splitLine(s);
 
         comment.ts = stringToTS(line[0]);
 

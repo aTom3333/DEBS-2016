@@ -13,8 +13,13 @@ public class FriendshipParser extends AbstractParser {
     }
 
     public Friendship getNext() throws IOException, ParseException {
+        String s = input.readLine();
+        if (s == null) {
+            return null;
+        }
+
         Friendship friendship = new Friendship();
-        String[] line = splitLine();
+        String[] line = splitLine(s);
         friendship.ts = stringToTS(line[0]);
         friendship.user_id_1 = Integer.valueOf(line[1]);
         friendship.user_id_2 = Integer.valueOf(line[2]);

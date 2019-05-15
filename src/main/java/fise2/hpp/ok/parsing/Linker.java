@@ -10,7 +10,9 @@ import fise2.hpp.ok.structs.User;
 public class Linker {
     public static void link(Comment comment, Data data) {
         User commentator = new User(comment.user);
-        data.users.putIfAbsent(comment.user_id, commentator);
+        if (data.users.putIfAbsent(comment.user_id, commentator) != null) {
+            data.users.get(comment.user_id).name = comment.user;
+        }
         data.comments.putIfAbsent(
                 comment.comment_id,
                 new fise2.hpp.ok.events.Comment(
@@ -30,7 +32,9 @@ public class Linker {
 
     public static void link(Post post, Data data) {
         User poster = new User(post.user);
-        data.users.putIfAbsent(post.user_id, poster);
+        if (data.users.putIfAbsent(post.user_id, poster) != null) {
+            data.users.get(post.user_id).name = post.user;
+        }
         data.posts.putIfAbsent(post.post_id, new fise2.hpp.ok.events.Post(post.ts, poster, post.post));
     }
 }

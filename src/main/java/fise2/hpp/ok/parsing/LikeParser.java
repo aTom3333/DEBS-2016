@@ -12,8 +12,13 @@ public class LikeParser extends AbstractParser {
     }
 
     public Like getNext() throws IOException, ParseException {
+        String s = input.readLine();
+        if (s == null) {
+            return null;
+        }
+
         Like like = new Like();
-        String[] line = splitLine();
+        String[] line = splitLine(s);
         like.ts = stringToTS(line[0]);
         like.user_id = Integer.valueOf(line[1]);
         like.comment_id = Integer.valueOf(line[2]);

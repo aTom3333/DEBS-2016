@@ -12,8 +12,13 @@ public class PostParser extends AbstractParser {
     }
 
     public Post getNext() throws ParseException, IOException {
+        String s = input.readLine();
+        if (s == null) {
+            return null;
+        }
+
         Post post = new Post();
-        String[] line = splitLine();
+        String[] line = splitLine(s);
         post.ts = stringToTS(line[0]);
         post.post_id = Integer.valueOf(line[1]);
         post.user_id = Integer.valueOf(line[2]);

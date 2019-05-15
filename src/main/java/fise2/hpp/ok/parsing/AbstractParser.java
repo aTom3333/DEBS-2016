@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 public abstract class AbstractParser {
-    private BufferedReader input;
+    protected BufferedReader input;
     private static SimpleDateFormat sdf = new SimpleDateFormat();
 
     public AbstractParser(Reader reader) {
@@ -21,9 +21,12 @@ public abstract class AbstractParser {
         }
     }
 
-    protected String[] splitLine() throws IOException {
-        String line = input.readLine();
-        StringTokenizer tok = new StringTokenizer(line, "|", false);
+    public boolean hasNext() throws IOException {
+        return input.ready();
+    }
+
+    protected String[] splitLine(String s) throws IOException {
+        StringTokenizer tok = new StringTokenizer(s, "|", false);
         ArrayList<String> result = new ArrayList<>();
         while (tok.hasMoreTokens()) {
             result.add(tok.nextToken());

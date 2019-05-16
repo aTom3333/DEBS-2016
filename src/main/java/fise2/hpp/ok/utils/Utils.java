@@ -29,4 +29,8 @@ public class Utils {
         Date d = sdf.parse(date);
         return d.getTime();
     }
+
+    public static String TSToString(long ts) {
+        return sdf.format(new Date(ts));
+    }
 }

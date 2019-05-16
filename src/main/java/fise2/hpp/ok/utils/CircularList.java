@@ -38,8 +38,8 @@ public class CircularList<T> implements Iterable<T> {
             default:
                 for (T e : other) {
                     curr = other.curr;
-                    ++size;
                 }
+                size = other.size;
                 break;
         }
     }
@@ -181,8 +181,6 @@ public class CircularList<T> implements Iterable<T> {
 
     /**
      * Sets the value of the current item.
-     *
-     * @return the value of the current item
      */
     public void setCurrent(T t) {
         curr.item = t;
@@ -222,7 +220,7 @@ public class CircularList<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        Iterator<T> it = new Iterator<>() {
+        return new Iterator<>() {
             private final Node<T> begin = curr;
             private Node<T> it_curr = curr;
             private boolean hasRemoved = false;
@@ -263,7 +261,6 @@ public class CircularList<T> implements Iterable<T> {
                 } while (it_curr != begin);
             }
         };
-        return it;
     }
 
     @Override

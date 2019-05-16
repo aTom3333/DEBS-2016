@@ -18,6 +18,7 @@ public class Linker {
                 comment.comment_id,
                 new fise2.hpp.ok.events.Comment(
                         comment.ts,
+                        comment.comment_id,
                         commentator,
                         comment.comment,
                         (comment.comment_replied != null ? data.comments.get(comment.comment_replied) : data.posts.get(comment.post_replied))));
@@ -32,6 +33,8 @@ public class Linker {
     }
 
     public static void link(Post post, Data data) {
+        data.expireUntil(post.ts);
+
         User poster = new User(post.user);
         User existing = data.users.putIfAbsent(post.user_id, poster);
         if(existing != null) {

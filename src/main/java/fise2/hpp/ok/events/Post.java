@@ -28,4 +28,18 @@ public class Post implements Answerable, Perishable {
     public Type getType() {
         return Type.POST;
     }
+
+    @Override
+    public long getTS() {
+        return ts;
+    }
+
+    public int getTotalScore() {
+        return relatedComments.stream().mapToInt(c -> c.score).sum() + score;
+    }
+
+    @Override
+    public void perish(int amount) {
+        score = Math.max(0, score - amount);
+    }
 }

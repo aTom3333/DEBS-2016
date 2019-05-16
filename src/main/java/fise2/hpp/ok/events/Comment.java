@@ -33,4 +33,14 @@ public class Comment implements Answerable, Perishable {
     public Type getType() {
         return Type.COMMENT;
     }
+
+    @Override
+    public long getTS() {
+        return ts;
+    }
+
+    @Override
+    public void perish(int amount) {
+        score = Math.max(0, score - amount);
+    }
 }

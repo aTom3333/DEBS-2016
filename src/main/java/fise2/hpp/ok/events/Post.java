@@ -42,4 +42,16 @@ public class Post implements Answerable, Perishable {
     public void perish(int amount) {
         score = Math.max(0, score - amount);
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "ts=" + ts +
+                ", post_id=" + post_id +
+                ", post='" + post + '\'' +
+                ", poster=" + poster +
+                ", relatedComments=" + relatedComments +
+                ", score=" + score +
+                '}';
+    }
 }

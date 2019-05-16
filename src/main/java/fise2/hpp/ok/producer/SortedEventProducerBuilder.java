@@ -16,7 +16,7 @@ public class SortedEventProducerBuilder {
     private ArrayList<Event.Type> requestedTypes = new ArrayList<>();
     private ArrayList<Reader> associatedReaders = new ArrayList<>();
 
-    SortedEventProducerBuilder(BlockingQueue<Event> q) {
+    public SortedEventProducerBuilder(BlockingQueue<Event> q) {
         queue = q;
     }
 

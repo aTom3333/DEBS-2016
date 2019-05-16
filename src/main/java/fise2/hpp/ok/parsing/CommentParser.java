@@ -1,6 +1,7 @@
 package fise2.hpp.ok.parsing;
 
 import fise2.hpp.ok.eventsIR.Comment;
+import fise2.hpp.ok.utils.Utils;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,9 +19,9 @@ public class CommentParser extends AbstractParser {
         }
 
         Comment comment = new Comment();
-        String[] line = splitLine(s);
+        String[] line = Utils.splitLine(s);
 
-        comment.ts = stringToTS(line[0]);
+        comment.ts = Utils.stringToTS(line[0]);
 
         comment.comment_id = Integer.valueOf(line[1]);
         comment.user_id = Integer.valueOf(line[2]);

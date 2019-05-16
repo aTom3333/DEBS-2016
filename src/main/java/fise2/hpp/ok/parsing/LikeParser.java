@@ -1,6 +1,7 @@
 package fise2.hpp.ok.parsing;
 
 import fise2.hpp.ok.eventsIR.Like;
+import fise2.hpp.ok.utils.Utils;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,8 +19,8 @@ public class LikeParser extends AbstractParser {
         }
 
         Like like = new Like();
-        String[] line = splitLine(s);
-        like.ts = stringToTS(line[0]);
+        String[] line = Utils.splitLine(s);
+        like.ts = Utils.stringToTS(line[0]);
         like.user_id = Integer.valueOf(line[1]);
         like.comment_id = Integer.valueOf(line[2]);
 

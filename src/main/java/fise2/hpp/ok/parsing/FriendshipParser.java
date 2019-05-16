@@ -2,6 +2,7 @@ package fise2.hpp.ok.parsing;
 
 
 import fise2.hpp.ok.eventsIR.Friendship;
+import fise2.hpp.ok.utils.Utils;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -19,8 +20,8 @@ public class FriendshipParser extends AbstractParser {
         }
 
         Friendship friendship = new Friendship();
-        String[] line = splitLine(s);
-        friendship.ts = stringToTS(line[0]);
+        String[] line = Utils.splitLine(s);
+        friendship.ts = Utils.stringToTS(line[0]);
         friendship.user_id_1 = Integer.valueOf(line[1]);
         friendship.user_id_2 = Integer.valueOf(line[2]);
 

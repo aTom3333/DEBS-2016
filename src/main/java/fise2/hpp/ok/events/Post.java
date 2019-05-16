@@ -1,9 +1,10 @@
 package fise2.hpp.ok.events;
 
 import fise2.hpp.ok.interfaces.Answerable;
+import fise2.hpp.ok.interfaces.Perishable;
 import fise2.hpp.ok.structs.User;
 
-public class Post implements Answerable {
+public class Post implements Answerable, Perishable {
 
     public long ts;
     public final String post;

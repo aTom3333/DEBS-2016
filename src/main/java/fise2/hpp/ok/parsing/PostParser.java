@@ -1,6 +1,7 @@
 package fise2.hpp.ok.parsing;
 
 import fise2.hpp.ok.eventsIR.Post;
+import fise2.hpp.ok.utils.Utils;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,8 +19,8 @@ public class PostParser extends AbstractParser {
         }
 
         Post post = new Post();
-        String[] line = splitLine(s);
-        post.ts = stringToTS(line[0]);
+        String[] line = Utils.splitLine(s);
+        post.ts = Utils.stringToTS(line[0]);
         post.post_id = Integer.valueOf(line[1]);
         post.user_id = Integer.valueOf(line[2]);
         post.post = line[3];

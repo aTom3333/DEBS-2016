@@ -176,6 +176,8 @@ public class CircularList<T> implements Iterable<T> {
      * @return the current item
      */
     public T curr() {
+        if(curr == null)
+            return null;
         return curr.item;
     }
 
@@ -265,6 +267,9 @@ public class CircularList<T> implements Iterable<T> {
 
     @Override
     public void forEach(Consumer<? super T> action) {
+        if(curr == null)
+            return;
+
         Objects.requireNonNull(action);
         final Node<T> begin = curr;
         do {

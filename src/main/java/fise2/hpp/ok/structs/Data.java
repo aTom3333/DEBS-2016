@@ -5,6 +5,7 @@ import fise2.hpp.ok.events.Post;
 import fise2.hpp.ok.interfaces.Perishable;
 import fise2.hpp.ok.utils.CircularList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,9 @@ public class Data {
 
     public CircularList<Perishable> sortedPosts = new CircularList<>();
 
-    public int lastTS = 0;
+    public long lastTS = 0;
+
+    public Post[] oldTop3;
 
     public void addPost(Post post) {
         posts.put(post.post_id, post);
@@ -50,6 +53,11 @@ public class Data {
     }
 
     public void expireUntil(long timestamp) {
+        if(sortedPosts.isEmpty()) {
+            lastTS = timestamp;
+            return;
+        }
+
         final long noOfFullDay = (timestamp - lastTS) / MS_PER_DAY;
         if(noOfFullDay > 0) {
             sortedPosts.forEach(p -> p.perish((int) noOfFullDay));
@@ -59,7 +67,7 @@ public class Data {
 
         int iter = 0;
 
-        final int lastDayTS = lastTS % MS_PER_DAY; // Number of ms since midnight
+        final long lastDayTS = lastTS % MS_PER_DAY; // Number of ms since midnight
         final long currentDayTS = timestamp % MS_PER_DAY; // Number of ms since midnight
 
         if(lastDayTS < currentDayTS) {
@@ -103,6 +111,27 @@ public class Data {
                 sortedPosts.advanceForward();
             }
         }
+
+        lastTS = timestamp;
+    }
+
+
+    public Post[] getTop3() {
+        Post[] top = new Post[3];
+        int[] scores = {0, 0, 0};
+
+        ArrayList<Post> list = new ArrayList<>(posts.values());
+
+        list.sort((a, b) -> b.getTotalScore() - a.getTotalScore());
+
+        if(list.size() > 0)
+            top[0] = list.get(0);
+        if(list.size() > 1)
+            top[1] = list.get(1);
+        if(list.size() > 2)
+            top[2] = list.get(2);
+
+        return top;
     }
 
 }

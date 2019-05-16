@@ -24,7 +24,7 @@ public class Query1 {
     private Top3Writer top3writer;
 
     public Query1(String directory, String outputFile) throws URISyntaxException, IOException {
-        data = Data.instance();
+        data = new Data();
         queue = new ArrayBlockingQueue<>(40);
         top3queue = new ArrayBlockingQueue<Top3>(40);
         producer = new SortedEventProducerBuilder(queue)
@@ -52,6 +52,7 @@ public class Query1 {
             }
             data.expireUntil(event.getTS());
             Linker.link(event, data);
+            //data.expireAt();
             Top3 top3 = data.getTop3();
             top3.ts = event.getTS();
             top3queue.put(top3);

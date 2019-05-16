@@ -20,14 +20,16 @@ public class Query1Test {
         while (expectedReader.ready()) {
             Assert.assertEquals(expectedReader.readLine(), actualReader.readLine());
         }
+        expectedReader.close();
+        actualReader.close();
         return true;
     }
 
     @Test
     public void Q1Basic() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Basic", "output.txt");
+        Query1 q = new Query1("Q1Basic", "output/Q1Basic/output.txt");
         q.run();
-        compareFiles("Q1Basic/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Basic/_expectedQ1.txt", "output/Q1Basic/output.txt");
     }
 
     @Test

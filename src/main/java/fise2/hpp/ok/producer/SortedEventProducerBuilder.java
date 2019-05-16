@@ -30,12 +30,12 @@ public class SortedEventProducerBuilder {
         return requestReader(type, new StringReader(string));
     }
 
-    public SortedEventProducerBuilder requesFile(Event.Type type, String filename) throws FileNotFoundException {
+    public SortedEventProducerBuilder requestFile(Event.Type type, String filename) throws FileNotFoundException {
         return requestReader(type, new FileReader(filename));
     }
 
     public SortedEventProducerBuilder requestResource(Event.Type type, String resource) throws URISyntaxException, FileNotFoundException {
-        return requesFile(type, Utils.pathToResource(resource));
+        return requestFile(type, Utils.pathToResource(resource));
     }
 
     public SortedEventProducer build() {

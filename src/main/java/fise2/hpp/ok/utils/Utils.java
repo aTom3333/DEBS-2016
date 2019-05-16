@@ -7,11 +7,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
 public class Utils {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private static DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     public static String pathToResource(String name) throws URISyntaxException {
         return Objects.requireNonNull(Utils.class.getClassLoader().getResource(name)).toURI().getPath();
@@ -31,6 +35,7 @@ public class Utils {
     }
 
     public static String TSToString(long ts) {
-        return sdf.format(new Date(ts));
+        OffsetDateTime time = new Date(ts).toInstant().atOffset(ZoneOffset.UTC);
+        return time.format(f);
     }
 }

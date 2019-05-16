@@ -101,7 +101,7 @@ public class Data {
             }
         }
 
-        // Remove expired posts
+        // Remove expired data
         for (int i = 0; i < iter; i++)
             sortedPosts.advanceBackward();
         for (int i = 0; i < iter; i++) {
@@ -117,25 +117,24 @@ public class Data {
     }
 
 
-    public Post[] getTop3() {
-        Post[] top = new Post[3];
-        int[] scores = {0, 0, 0};
+    public Top3 getTop3() {
+        Top3 top3 = new Top3();
 
         ArrayList<Post> list = new ArrayList<>(posts.values());
 
         list.sort((a, b) -> b.getTotalScore() - a.getTotalScore());
 
         if (list.size() > 0) {
-            top[0] = list.get(0);
+            top3.data[0] = new Top3.PostData(list.get(0));
         }
         if (list.size() > 1) {
-            top[1] = list.get(1);
+            top3.data[1] = new Top3.PostData(list.get(1));
         }
         if (list.size() > 2) {
-            top[2] = list.get(2);
+            top3.data[2] = new Top3.PostData(list.get(2));
         }
 
-        return top;
+        return top3;
     }
 
 }

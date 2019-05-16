@@ -1,11 +1,15 @@
 package fise2.hpp.ok.interfaces;
 
 public interface Event {
-    public Type getType();
+    Type getType();
 
-    public long getTS();
+    long getTS();
 
-    public enum Type {
+    default boolean isPoisonous() {
+        return false;
+    }
+
+    enum Type {
         COMMENT, FRIENDSHIP, LIKE, POST
     }
 }

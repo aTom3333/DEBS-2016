@@ -54,4 +54,14 @@ public class Post implements Answerable, Perishable {
                 ", score=" + score +
                 '}';
     }
+
+    public int getTotalCommenters() {
+        HashSet<User> users = new HashSet<User>();
+        for (Comment c : relatedComments) {
+            if (c.commentator != poster) {
+                users.add(c.commentator);
+            }
+        }
+        return users.size();
+    }
 }

@@ -1,5 +1,6 @@
 package fise2.hpp.ok.producer;
 
+import fise2.hpp.ok.events.PoisonPill;
 import fise2.hpp.ok.interfaces.Event;
 import fise2.hpp.ok.parsing.*;
 
@@ -79,6 +80,7 @@ public class SortedEventProducer implements Runnable {
         try {
             prefillBuffer();
             while (insertAndRefill()) ;
+            queue.put(new PoisonPill());
         } catch (InterruptedException | IOException | ParseException e) {
             e.printStackTrace();
         }

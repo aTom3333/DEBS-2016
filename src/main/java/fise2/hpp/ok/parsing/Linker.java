@@ -33,8 +33,6 @@ public class Linker {
     }
 
     public static void link(Post post, Data data) {
-        data.expireUntil(post.ts);
-
         User poster = new User(post.user);
         User existing = data.users.putIfAbsent(post.user_id, poster);
         if(existing != null) {

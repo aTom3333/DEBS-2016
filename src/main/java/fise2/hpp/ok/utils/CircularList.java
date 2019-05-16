@@ -265,12 +265,14 @@ public class CircularList<T> implements Iterable<T> {
 
     @Override
     public void forEach(Consumer<? super T> action) {
-        Objects.requireNonNull(action);
-        final Node<T> begin = curr;
-        do {
-            action.accept(curr.item);
-            advanceForward();
-        } while (curr != begin);
+        if (!isEmpty()) {
+            Objects.requireNonNull(action);
+            final Node<T> begin = curr;
+            do {
+                action.accept(curr.item);
+                advanceForward();
+            } while (curr != begin);
+        }
     }
 
     /**

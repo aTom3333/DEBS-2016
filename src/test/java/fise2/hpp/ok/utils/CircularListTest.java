@@ -116,14 +116,18 @@ public class CircularListTest {
 
     @Test
     public void removeCurr() {
+        // cas vide
         Assert.assertFalse(clempty.removeCurr());
 
+        // cas un élément
         CircularList<Integer> clunique = new CircularList<>(Collections.singletonList(0));
         Assert.assertTrue(clunique.removeCurr());
+        Assert.assertTrue(clunique.isEmpty());
         Assert.assertEquals(0, clunique.size());
         exception.expect(NullPointerException.class);
         clunique.curr();
 
+        // cas nominal
         CircularList<Integer> clcopy = new CircularList<>(cl);
         Assert.assertTrue(clcopy.removeCurr());
         Assert.assertEquals(9, clcopy.size());
@@ -181,7 +185,18 @@ public class CircularListTest {
 
     @Test
     public void forEach() {
+        // cas vide
         ArrayList<Integer> a = new ArrayList<Integer>();
+        clempty.forEach(a::add);
+        Assert.assertArrayEquals(Collections.emptyList().toArray(), a.toArray());
+        // cas un élément
+        a.clear();
+        CircularList<Integer> clunique = new CircularList<>(Collections.singletonList(0));
+        clunique.forEach(a::add);
+        Assert.assertArrayEquals(Arrays.asList(0).toArray(), a.toArray());
+        Assert.assertEquals(Integer.valueOf(0), clunique.curr());
+        // cas nominal
+        a.clear();
         cl.forEach(a::add);
         Assert.assertArrayEquals(cl.toArray(), a.toArray());
         Assert.assertEquals(Integer.valueOf(9), cl.curr());
@@ -204,15 +219,15 @@ public class CircularListTest {
     }
 
     @Test
-    public void iteratorRemove() {
-        // TODO
-    }
-
-    @Test
     public void iteratorNextNoSuchElementException() {
         Iterator<Integer> iterator = clempty.iterator();
         exception.expect(NoSuchElementException.class);
         iterator.next();
+    }
+
+    @Test
+    public void iteratorRemove() {
+        // TODO
     }
 
     @Test

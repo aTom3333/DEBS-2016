@@ -25,13 +25,13 @@ public class SortedEventProducer implements Runnable {
         buffer = new Event[requestedTypes.length];
         parsers = new AbstractParser[requestedTypes.length];
 
-        for(int i = 0; i < requestedTypes.length; i++) {
+        for (int i = 0; i < requestedTypes.length; i++) {
             setupType(requestedTypes[i], readers[i], i);
         }
     }
 
     private void setupType(Event.Type type, Reader reader, int index) {
-        switch(type) {
+        switch (type) {
             case LIKE:
                 parsers[index] = new LikeParser(reader);
                 break;
@@ -48,7 +48,7 @@ public class SortedEventProducer implements Runnable {
     }
 
     private void prefillBuffer() throws IOException, ParseException {
-        for(int i = 0; i < buffer.length; i++) {
+        for (int i = 0; i < buffer.length; i++) {
             buffer[i] = parsers[i].getNext();
         }
     }
@@ -56,12 +56,15 @@ public class SortedEventProducer implements Runnable {
 
     private boolean insertAndRefill() throws InterruptedException, IOException, ParseException {
         int index = -1;
-        for(int i = 0; i < buffer.length; i++) {
-            if(buffer[i] != null && (index == -1 || buffer[index].getTS() > buffer[i].getTS()))
+        for (int i = 0; i < buffer.length; i++) {
+            if (buffer[i] != null && (index == -1 || buffer[index].getTS() > buffer[i].getTS())) {
                 index = i;
+            }
         }
-        if(index == -1) // Plus de données, tous les buffers sont vides
+        if (index == -1) // Plus de données, tous les buffers sont vides
+        {
             return false;
+        }
 
         queue.put(buffer[index]);
 
@@ -75,8 +78,8 @@ public class SortedEventProducer implements Runnable {
     public void run() {
         try {
             prefillBuffer();
-            while(insertAndRefill()) ;
-        } catch(InterruptedException | IOException | ParseException e) {
+            while (insertAndRefill()) ;
+        } catch (InterruptedException | IOException | ParseException e) {
             e.printStackTrace();
         }
     }

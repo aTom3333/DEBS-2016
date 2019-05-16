@@ -12,4 +12,9 @@ public class Like implements Event {
     public Type getType() {
         return Type.LIKE;
     }
+
+    @Override
+    public long getTS() {
+        return ts;
+    }
 }

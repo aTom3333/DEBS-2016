@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * This class implements a circular doubly-linked list, i.e. the first and last element point to each other.
@@ -83,7 +84,8 @@ public class CircularList<T> implements Iterable<T> {
                 curr.prev = curr.next = new Node<T>(curr, t, curr);
                 break;
             default:
-                curr.next = new Node<T>(curr, t, curr.next);
+                final Node<T> next = curr.next;
+                next.prev = curr.next = new Node<T>(curr, t, curr.next);
                 break;
         }
         ++size;
@@ -104,7 +106,8 @@ public class CircularList<T> implements Iterable<T> {
                 curr.prev = curr.next = new Node<T>(curr, t, curr);
                 break;
             default:
-                curr.prev = new Node<T>(curr.prev, t, curr);
+                final Node<T> prev = curr.prev;
+                prev.next = curr.prev = new Node<T>(curr.prev, t, curr);
                 break;
         }
         ++size;
@@ -216,6 +219,29 @@ public class CircularList<T> implements Iterable<T> {
             advanceForward();
         }
         return output;
+    }
+
+    /**
+     * Removes each element which satisfies the Predicate.
+     *
+     * @param action a Predicate which returns true if the element must be removed
+     */
+    public void removeIf(Predicate<? super T> action) {
+        if (!isEmpty()) {
+            Objects.requireNonNull(action);
+            final Node<T> begin = curr;
+            advanceForward();
+            while (curr != begin) {
+                if (action.test(curr())) {
+                    removeCurr();
+                } else {
+                    advanceForward();
+                }
+            }
+            if (action.test(curr())) {
+                removeCurr();
+            }
+        }
     }
 
     @Override

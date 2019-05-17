@@ -58,7 +58,11 @@ public class CircularListTest {
         Assert.assertEquals(Integer.valueOf(8), clcopy.prev());
         Assert.assertEquals(Integer.valueOf(9), clcopy.curr());
         Assert.assertEquals(Integer.valueOf(100), clcopy.advanceForward());
+        Assert.assertEquals(Integer.valueOf(9), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(0), clcopy.next());
         Assert.assertEquals(Integer.valueOf(0), clcopy.advanceForward());
+        Assert.assertEquals(Integer.valueOf(100), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(1), clcopy.next());
     }
 
     @Test
@@ -90,7 +94,11 @@ public class CircularListTest {
         Assert.assertEquals(Integer.valueOf(0), clcopy.next());
         Assert.assertEquals(Integer.valueOf(9), clcopy.curr());
         Assert.assertEquals(Integer.valueOf(100), clcopy.advanceBackward());
+        Assert.assertEquals(Integer.valueOf(8), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(9), clcopy.next());
         Assert.assertEquals(Integer.valueOf(8), clcopy.advanceBackward());
+        Assert.assertEquals(Integer.valueOf(7), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(100), clcopy.next());
     }
 
     @Test
@@ -216,6 +224,38 @@ public class CircularListTest {
         iterator.forEachRemaining(a::add);
         Assert.assertArrayEquals(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8).toArray(), a.toArray());
         Assert.assertEquals(Integer.valueOf(9), cl.curr());
+    }
+
+    @Test
+    public void removeIf() {
+        CircularList<Integer> clemptycopy = new CircularList<>(clempty);
+        clemptycopy.removeIf(p -> {
+            return p == 2;
+        });
+        Assert.assertEquals(0, clemptycopy.size());
+        Assert.assertTrue(clemptycopy.isEmpty());
+
+        CircularList<Integer> clunique = new CircularList<>(new ArrayList<Integer>(Collections.singletonList(2)));
+        clunique.removeIf(p -> {
+            return p == 2;
+        });
+        Assert.assertEquals(0, clunique.size());
+        Assert.assertTrue(clunique.isEmpty());
+        Assert.assertArrayEquals(Collections.emptyList().toArray(), clunique.toArray());
+
+        CircularList<Integer> clnom = new CircularList<>(new ArrayList<Integer>(Arrays.asList(0, 1, 2, 2, 2, 5, 6, 7, 8, 9)));
+        clnom.removeIf(p -> {
+            return p == 2;
+        });
+        Assert.assertEquals(7, clnom.size());
+        Assert.assertArrayEquals(Arrays.asList(9, 0, 1, 5, 6, 7, 8).toArray(), clnom.toArray());
+
+        CircularList<Integer> clnom2 = new CircularList<>(new ArrayList<Integer>(Arrays.asList(8, 1, 2, 3, 4, 5, 6, 7, 8, 8)));
+        clnom2.removeIf(p -> {
+            return p == 8;
+        });
+        Assert.assertEquals(7, clnom2.size());
+        Assert.assertArrayEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7).toArray(), clnom2.toArray());
     }
 
     @Test

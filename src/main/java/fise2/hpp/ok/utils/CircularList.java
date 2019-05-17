@@ -84,8 +84,7 @@ public class CircularList<T> implements Iterable<T> {
                 curr.prev = curr.next = new Node<T>(curr, t, curr);
                 break;
             default:
-                final Node<T> next = curr.next;
-                next.prev = curr.next = new Node<T>(curr, t, curr.next);
+                curr.next = curr.next.prev = new Node<T>(curr, t, curr.next);
                 break;
 
         }
@@ -107,8 +106,7 @@ public class CircularList<T> implements Iterable<T> {
                 curr.prev = curr.next = new Node<T>(curr, t, curr);
                 break;
             default:
-                final Node<T> prev = curr.prev;
-                prev.next = curr.prev = new Node<T>(curr.prev, t, curr);
+                curr.prev = curr.prev.next = new Node<T>(curr.prev, t, curr);
                 break;
         }
         ++size;

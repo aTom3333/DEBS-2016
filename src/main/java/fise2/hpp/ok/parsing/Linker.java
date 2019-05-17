@@ -30,6 +30,7 @@ public class Linker {
         User existing = data.users.putIfAbsent(comment.user_id, commentator);
         if(existing != null) {
             existing.name = comment.user;
+            commentator = existing;
         }
         data.addComment(
                 new fise2.hpp.ok.events.Comment(
@@ -53,6 +54,7 @@ public class Linker {
         User existing = data.users.putIfAbsent(post.user_id, poster);
         if(existing != null) {
             existing.name = post.user;
+            poster = existing;
         }
         data.addPost(new fise2.hpp.ok.events.Post(post.ts, post.post_id, poster, post.post));
     }

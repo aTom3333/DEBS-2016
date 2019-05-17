@@ -24,6 +24,7 @@ public class Data {
     }
 
     public long lastTS = 0;
+    private boolean testExact = true;
 
     public Post[] oldTop3;
 
@@ -55,6 +56,9 @@ public class Data {
     }
 
     public void addComment(Comment comment) {
+        if(comment.answered == null)
+            return;
+
         Post parent = comment.getParentPost();
         if (parent.score <= 0) {
             return; // Si le post est déjà expiré, on ne retient pas le commentaire
@@ -78,6 +82,8 @@ public class Data {
     }
 
     public void expireUntil(long timestamp) {
+        testExact = (lastTS != timestamp);
+
         if (perishables.isEmpty()) {
             lastTS = timestamp;
             return;
@@ -158,7 +164,7 @@ public class Data {
     }
 
     public void expireAt() {
-        if (perishables.isEmpty()) {
+        if(perishables.isEmpty() || !testExact) {
             return;
         }
 

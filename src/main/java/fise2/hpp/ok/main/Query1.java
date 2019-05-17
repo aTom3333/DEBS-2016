@@ -12,6 +12,8 @@ import fise2.hpp.ok.writer.Top3Writer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -28,10 +30,12 @@ public class Query1 {
         queue = new ArrayBlockingQueue<>(40);
         top3queue = new ArrayBlockingQueue<Top3>(40);
         producer = new SortedEventProducerBuilder(queue)
-                .requestResource(Event.Type.COMMENT, directory + "/comments.dat")
                 .requestResource(Event.Type.POST, directory + "/posts.dat")
+                .requestResource(Event.Type.COMMENT, directory + "/comments.dat")
                 .build();
-        top3writer = new Top3Writer(top3queue, Paths.get(Utils.getJARPath().toString(), outputFile));
+        Path path = Paths.get(Utils.getJARPath().toString(), outputFile);
+        Files.createDirectories(path.getParent());
+        top3writer = new Top3Writer(top3queue, path);
     }
 
     public void run() throws InterruptedException {

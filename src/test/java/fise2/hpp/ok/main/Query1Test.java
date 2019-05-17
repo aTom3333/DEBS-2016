@@ -27,78 +27,78 @@ public class Query1Test {
 
     @Test
     public void Q1Basic() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Basic", "output.txt");
+        Query1 q = new Query1("Q1Basic", "output/Q1Basic/output.txt");
         q.run();
-        compareFiles("Q1Basic/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Basic/_expectedQ1.txt", "output/Q1Basic/output.txt");
     }
 
     @Test
     public void Q1Basic2() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Basic2", "output.txt");
+        Query1 q = new Query1("Q1Basic2", "output/Q1Basic2/output.txt");
         q.run();
-        compareFiles("Q1Basic2/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Basic2/_expectedQ1.txt", "output/Q1Basic2/output.txt");
     }
 
     @Test
     public void Q1BigTest() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1BigTest", "output.txt");
+        Query1 q = new Query1("Q1BigTest", "output/Q1BigTest/output.txt");
         q.run();
-        compareFiles("Q1BigTest/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1BigTest/_expectedQ1.txt", "output/Q1BigTest/output.txt");
     }
 
     @Test
     public void Q1Case1() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Case1", "output.txt");
+        Query1 q = new Query1("Q1Case1", "output/Q1Case1/output.txt");
         q.run();
-        compareFiles("Q1Case1/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Case1/_expectedQ1.txt", "output/Q1Case1/output.txt");
     }
 
     @Test
     public void Q1Case2() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Case2", "output.txt");
+        Query1 q = new Query1("Q1Case2", "output/Q1Case2/output.txt");
         q.run();
-        compareFiles("Q1Case2/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Case2/_expectedQ1.txt", "output/Q1Case2/output.txt");
     }
 
     @Test
     public void Q1Case3() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Case3", "output.txt");
+        Query1 q = new Query1("Q1Case3", "output/Q1Case3/output.txt");
         q.run();
-        compareFiles("Q1Case3/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Case3/_expectedQ1.txt", "output/Q1Case3/output.txt");
     }
 
     @Test
     public void Q1Case4() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Case4", "output.txt");
+        Query1 q = new Query1("Q1Case4", "output/Q1Case4/output.txt");
         q.run();
-        compareFiles("Q1Case4/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Case4/_expectedQ1.txt", "output/Q1Case4/output.txt");
     }
 
     @Test
     public void Q1Case5() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Case5", "output.txt");
+        Query1 q = new Query1("Q1Case5", "output/Q1Case5/output.txt");
         q.run();
-        compareFiles("Q1Case5/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1Case5/_expectedQ1.txt", "output/Q1Case5/output.txt");
     }
 
     @Test
     public void Q1CommentCount() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1CommentCount", "output.txt");
+        Query1 q = new Query1("Q1CommentCount", "output/Q1CommentCount/output.txt");
         q.run();
-        compareFiles("Q1CommentCount/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1CommentCount/_expectedQ1.txt", "output/Q1CommentCount/output.txt");
     }
 
     @Test
     public void Q1PostExpiredComment() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1PostExpiredComment", "output.txt");
+        Query1 q = new Query1("Q1PostExpiredComment", "output/Q1PostExpiredComment/output.txt");
         q.run();
-        compareFiles("Q1PostExpiredComment/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1PostExpiredComment/_expectedQ1.txt", "output/Q1PostExpiredComment/output.txt");
     }
 
     @Test
     public void Q1PostExpiredComment2() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1PostExpiredComment2", "output.txt");
+        Query1 q = new Query1("Q1PostExpiredComment2", "output/Q1PostExpiredComment2/output.txt");
         q.run();
-        compareFiles("Q1PostExpiredComment2/_expectedQ1.txt", "output.txt");
+        compareFiles("Q1PostExpiredComment2/_expectedQ1.txt", "output/Q1PostExpiredComment2/output.txt");
     }
 }

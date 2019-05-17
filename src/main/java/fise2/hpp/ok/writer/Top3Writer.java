@@ -10,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class Top3Writer implements Runnable {
     private BlockingQueue<Top3> queue;
-    private Top3 oldTop3;
+    private Top3 oldTop3 = new Top3();
     private Path outpath;
 
     public Top3Writer(BlockingQueue<Top3> q, Path outpath) throws IOException {
@@ -31,6 +31,7 @@ public class Top3Writer implements Runnable {
                 if (!top3.equals(oldTop3)) {
                     try {
                         Files.write(outpath, top3.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.WRITE);
+                        oldTop3 = top3;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

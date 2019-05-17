@@ -27,9 +27,9 @@ public class Query1Test {
 
     @Test
     public void Q1Basic() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("Q1Basic", "output/Q1Basic/output.txt");
+        Query1 q = new Query1("Q1Basic", "output.txt");
         q.run();
-        compareFiles("Q1Basic/_expectedQ1.txt", "output/Q1Basic/output.txt");
+        compareFiles("Q1Basic/_expectedQ1.txt", "output.txt");
     }
 
     @Test

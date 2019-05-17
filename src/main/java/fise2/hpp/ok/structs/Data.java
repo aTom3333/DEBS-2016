@@ -32,7 +32,26 @@ public class Data {
 
         expireAt();
 
-        perishables.addBefore(post);
+        addInCircularAtLastOfSameTS(post);
+    }
+
+    private void addInCircularAtLastOfSameTS(Perishable p) {
+        if(perishables.isEmpty()) {
+            perishables.addBefore(p);
+            return;
+        }
+
+        int iter = 0;
+        final Perishable first = perishables.curr();
+        while(perishables.curr().getTS() % MS_PER_DAY == lastTS % MS_PER_DAY) {
+            perishables.advanceForward();
+            iter++;
+            if(perishables.curr() == first)
+                break;
+        }
+        perishables.addBefore(p);
+        for(int i = 0; i < iter + 1; i++)
+            perishables.advanceBackward();
     }
 
     public void addComment(Comment comment) {
@@ -45,7 +64,7 @@ public class Data {
 
         expireAt();
 
-        perishables.addBefore(comment);
+        addInCircularAtLastOfSameTS(comment);
     }
 
     public void removePost(Post post) {
@@ -65,16 +84,22 @@ public class Data {
         }
 
         final long noOfFullDay = (timestamp - lastTS) / MS_PER_DAY;
+        final long lastDayTS = lastTS % MS_PER_DAY; // Number of ms since midnight
+        final long currentDayTS = timestamp % MS_PER_DAY; // Number of ms since midnight
+
         if (noOfFullDay > 0) {
-            perishables.forEach(p -> p.perish((int) noOfFullDay));
+            perishables.forEach(p -> {
+                if(currentDayTS == lastDayTS && p.getTS() % MS_PER_DAY == currentDayTS)
+                    p.perish((int) noOfFullDay - 1);
+                else
+                    p.perish((int) noOfFullDay);
+            });
         }
 
         final Perishable first = perishables.curr();
 
         int iter = 0;
 
-        final long lastDayTS = lastTS % MS_PER_DAY; // Number of ms since midnight
-        final long currentDayTS = timestamp % MS_PER_DAY; // Number of ms since midnight
 
         if (lastDayTS < currentDayTS) {
             if (first.getTS() % MS_PER_DAY > lastDayTS
@@ -90,7 +115,7 @@ public class Data {
                 perishables.advanceForward();
                 iter++;
             }
-        } else {
+        } else if(lastDayTS > currentDayTS) {
             if (first.getTS() % MS_PER_DAY > lastDayTS
                     || first.getTS() % MS_PER_DAY < currentDayTS) {
                 first.perish(1);

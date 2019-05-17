@@ -3,6 +3,9 @@ package fise2.hpp.ok.structs;
 import fise2.hpp.ok.events.Post;
 import fise2.hpp.ok.utils.Utils;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Top3 {
     public PostData[] data;
     public long ts;
@@ -16,6 +19,19 @@ public class Top3 {
         Top3 top3 = new Top3();
         top3.poisonous = true;
         return top3;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Top3 top3 = (Top3) o;
+        return Arrays.equals(data, top3.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(data);
     }
 
     public boolean isPoisonous() {
@@ -44,6 +60,19 @@ public class Top3 {
         public String user;
         public int score;
         public int commenters;
+
+        @Override
+        public boolean equals(Object o) {
+            if(this == o) return true;
+            if(o == null || getClass() != o.getClass()) return false;
+            PostData postData = (PostData) o;
+            return post_id == postData.post_id;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(post_id);
+        }
 
         public PostData(Post p) {
             this.post_id = p.post_id;

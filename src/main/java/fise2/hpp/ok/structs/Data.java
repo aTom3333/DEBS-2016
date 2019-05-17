@@ -50,6 +50,10 @@ public class Data {
 
     public void removePost(Post post) {
         posts.remove(post.post_id);
+        int size = perishables.size();
+        perishables.removeIf(p -> {
+            return post.relatedComments.contains(p);
+        });
         for (Comment c : post.relatedComments)
             comments.remove(c.comment_id);
     }
@@ -103,6 +107,17 @@ public class Data {
         }
 
         // Remove expired data
+        if (noOfFullDay > 0) {
+            perishables.forEach(p -> {
+                if (p instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
+                    removePost((Post) perishables.curr());
+                    perishables.removeCurr();
+                }
+            });
+            lastTS = timestamp;
+            return;
+        }
+
         for (int i = 0; i < iter; i++)
             perishables.advanceBackward();
         for (int i = 0; i < iter; i++) {

@@ -189,6 +189,20 @@ public class CircularList<T> implements Iterable<T> {
     }
 
     /**
+     * Marks the current node to be removed when {@link #swipeMarked()} is called.
+     */
+    public void markCurrent() {
+        curr.markedForDeath = true;
+    }
+
+    /**
+     * Set the mark of the current node;
+     */
+    public void markCurrent(boolean b) {
+        curr.markedForDeath = b;
+    }
+
+    /**
      * Checks if empty.
      *
      * @return true if the list is empty
@@ -243,6 +257,66 @@ public class CircularList<T> implements Iterable<T> {
         }
     }
 
+    /**
+     * Marks each element which satisfies the Predicate.
+     *
+     * @param action a Predicate which returns true if the element must be marked
+     */
+    public void markIf(Predicate<? super T> action) {
+        if (!isEmpty()) {
+            Objects.requireNonNull(action);
+            final Node<T> begin = curr;
+            advanceForward();
+            while (curr != begin) {
+                if (action.test(curr())) {
+                    curr.markedForDeath = true;
+                }
+                advanceForward();
+            }
+            if (action.test(curr())) {
+                curr.markedForDeath = true;
+            }
+        }
+    }
+
+    /**
+     * Set the mark of each element according to the Predicate return.
+     *
+     * @param action a Predicate which returns true if the element must be marked, and false if it must be unmarked
+     */
+    public void setMarkIf(Predicate<? super T> action) {
+        if (!isEmpty()) {
+            Objects.requireNonNull(action);
+            final Node<T> begin = curr;
+            advanceForward();
+            while (curr != begin) {
+                curr.markedForDeath = action.test(curr());
+                advanceForward();
+            }
+            curr.markedForDeath = action.test(curr());
+        }
+    }
+
+    /**
+     * Removes every Node previously marked.
+     */
+    public void swipeMarked() {
+        if (!isEmpty()) {
+            final Node<T> begin = curr;
+            advanceForward();
+            while (curr != begin) {
+                if (curr.markedForDeath) {
+                    removeCurr();
+                } else {
+                    advanceForward();
+                }
+            }
+            if (curr.markedForDeath) {
+                removeCurr();
+            }
+        }
+    }
+
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
@@ -287,6 +361,7 @@ public class CircularList<T> implements Iterable<T> {
             }
         };
     }
+
 
     @Override
     public void forEach(Consumer<? super T> action) {
@@ -368,6 +443,7 @@ public class CircularList<T> implements Iterable<T> {
         T item;
         Node<T> next;
         Node<T> prev;
+        boolean markedForDeath = false;
 
         Node(Node<T> prev, T element, Node<T> next) {
             this.prev = prev;

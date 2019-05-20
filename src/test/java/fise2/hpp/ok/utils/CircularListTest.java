@@ -305,4 +305,44 @@ public class CircularListTest {
         Assert.assertEquals(Integer.valueOf(1), clcopy1.curr());
         Assert.assertEquals(Integer.valueOf(100), clother2.curr());
     }
+
+    @Test
+    public void markCurrent() {
+        CircularList<Integer> clemptycopy = new CircularList<>(clempty);
+        CircularList<Integer> clcopy = new CircularList<>(cl);
+
+        clemptycopy.markIf(p -> {
+            return true;
+        });
+        clemptycopy.swipeMarked();
+
+        clcopy.markCurrent();
+        clcopy.advanceForward();
+        clcopy.markCurrent();
+        clcopy.advanceForward();
+        clcopy.swipeMarked();
+        Assert.assertEquals(8, clcopy.size());
+        Assert.assertArrayEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8).toArray(), clcopy.toArray());
+    }
+
+    @Test
+    public void markIf() {
+        CircularList<Integer> clc = new CircularList<>(Arrays.asList(1, 9, 2, 9, 3, 9, 4, 9, 5, 9));
+        clc.markIf(p -> {
+            return p == 9;
+        });
+        clc.setMarkIf(p -> {
+            return false;
+        });
+        clc.swipeMarked();
+        Assert.assertEquals(10, clc.size());
+        Assert.assertArrayEquals(Arrays.asList(9, 1, 9, 2, 9, 3, 9, 4, 9, 5).toArray(), clc.toArray());
+
+        clc.markIf(p -> {
+            return p == 9;
+        });
+        clc.swipeMarked();
+        Assert.assertEquals(5, clc.size());
+        Assert.assertArrayEquals(Arrays.asList(1, 2, 3, 4, 5).toArray(), clc.toArray());
+    }
 }

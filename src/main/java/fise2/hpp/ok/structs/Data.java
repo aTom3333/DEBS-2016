@@ -139,12 +139,23 @@ public class Data {
 
         // Remove expired data
         if (noOfFullDay > 0) {
-            perishables.forEach(p -> {
-                if (p instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
+            final int size = perishables.size();
+
+            for(int i = 0; i < size; i++) {
+                if(perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
                     removePost((Post) perishables.curr());
-                    perishables.removeCurr();
+                } else {
+                    perishables.advanceForward();
                 }
-            });
+            }
+
+//            perishables.removeIf(p ->{
+//                if (p instanceof Post && ((Post) p).getTotalScore() == 0) {
+//                    removePost((Post) p);
+//                    return true;
+//                }
+//                return false;
+//            });
             lastTS = timestamp;
             return;
         }

@@ -57,11 +57,14 @@ public class CircularListTest {
         Assert.assertEquals(11, clcopy.size());
         Assert.assertEquals(Integer.valueOf(8), clcopy.prev());
         Assert.assertEquals(Integer.valueOf(9), clcopy.curr());
+        Assert.assertEquals(Integer.valueOf(100), clcopy.next());
         Assert.assertEquals(Integer.valueOf(100), clcopy.advanceForward());
         Assert.assertEquals(Integer.valueOf(9), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(100), clcopy.curr());
         Assert.assertEquals(Integer.valueOf(0), clcopy.next());
         Assert.assertEquals(Integer.valueOf(0), clcopy.advanceForward());
         Assert.assertEquals(Integer.valueOf(100), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(0), clcopy.curr());
         Assert.assertEquals(Integer.valueOf(1), clcopy.next());
     }
 
@@ -82,8 +85,11 @@ public class CircularListTest {
         Assert.assertEquals(2, clunique.size());
         Assert.assertEquals(Integer.valueOf(100), clunique.prev());
         Assert.assertEquals(Integer.valueOf(0), clunique.curr());
+        Assert.assertEquals(Integer.valueOf(100), clunique.next());
         Assert.assertEquals(Integer.valueOf(100), clunique.advanceForward());
-        Assert.assertEquals(Integer.valueOf(0), clunique.advanceForward());
+        Assert.assertEquals(Integer.valueOf(0), clunique.prev());
+        Assert.assertEquals(Integer.valueOf(100), clunique.curr());
+        Assert.assertEquals(Integer.valueOf(0), clunique.next());
     }
 
     @Test
@@ -91,13 +97,16 @@ public class CircularListTest {
         CircularList<Integer> clcopy = new CircularList<>(cl);
         clcopy.addBefore(100);
         Assert.assertEquals(11, clcopy.size());
-        Assert.assertEquals(Integer.valueOf(0), clcopy.next());
+        Assert.assertEquals(Integer.valueOf(100), clcopy.prev());
         Assert.assertEquals(Integer.valueOf(9), clcopy.curr());
+        Assert.assertEquals(Integer.valueOf(0), clcopy.next());
         Assert.assertEquals(Integer.valueOf(100), clcopy.advanceBackward());
         Assert.assertEquals(Integer.valueOf(8), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(100), clcopy.curr());
         Assert.assertEquals(Integer.valueOf(9), clcopy.next());
         Assert.assertEquals(Integer.valueOf(8), clcopy.advanceBackward());
         Assert.assertEquals(Integer.valueOf(7), clcopy.prev());
+        Assert.assertEquals(Integer.valueOf(8), clcopy.curr());
         Assert.assertEquals(Integer.valueOf(100), clcopy.next());
     }
 
@@ -118,8 +127,11 @@ public class CircularListTest {
         Assert.assertEquals(2, clunique.size());
         Assert.assertEquals(Integer.valueOf(100), clunique.prev());
         Assert.assertEquals(Integer.valueOf(0), clunique.curr());
+        Assert.assertEquals(Integer.valueOf(100), clunique.next());
         Assert.assertEquals(Integer.valueOf(100), clunique.advanceForward());
-        Assert.assertEquals(Integer.valueOf(0), clunique.advanceForward());
+        Assert.assertEquals(Integer.valueOf(0), clunique.prev());
+        Assert.assertEquals(Integer.valueOf(100), clunique.curr());
+        Assert.assertEquals(Integer.valueOf(0), clunique.next());
     }
 
     @Test

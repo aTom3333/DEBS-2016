@@ -18,7 +18,9 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
     public User poster;
     public final Set<Comment> relatedComments = new HashSet<>(); // For faster lookup
 
-    public int score = 10;
+    private int score = 10;
+    private int cachedTotalScore = 10;
+    private boolean isCacheUpdtated = true;
 
     public Post(long ts, long post_id, User poster, String post) {
         this.post_id = post_id;
@@ -37,13 +39,22 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
         return ts;
     }
 
+    public int score() {
+        return score;
+    }
+
     public int getTotalScore() {
-        return relatedComments.stream().mapToInt(c -> c.score).sum() + score;
+        if (!isCacheUpdtated) {
+            cachedTotalScore = relatedComments.stream().mapToInt(c -> c.score).sum() + score;
+            isCacheUpdtated = true;
+        }
+        return cachedTotalScore;
     }
 
     @Override
     public void perish(int amount) {
         score = Math.max(0, score - amount);
+        isCacheUpdtated = false;
     }
 
     @Override
@@ -74,6 +85,7 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
         int new_score = Math.max(10 - numdays, 0);
         if (new_score != score) {
             score = new_score;
+            isCacheUpdtated = false;
             return true;
         }
         return false;
@@ -81,7 +93,6 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
 
     @Override
     public int compareTo(Post post) {
-
         return new CompareToBuilder()
                 .append(post.getTotalScore(), getTotalScore())
                 .append(post.getTS(), getTS())

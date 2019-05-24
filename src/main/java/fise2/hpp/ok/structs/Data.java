@@ -50,7 +50,7 @@ public class Data {
         }
 
         Post parent = comment.getParentPost();
-        if (parent.score <= 0) {
+        if (parent.score() <= 0) {
             return; // Si le post est déjà expiré, on ne retient pas le commentaire
         }
         comments.put(comment.comment_id, comment);

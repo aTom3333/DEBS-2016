@@ -41,20 +41,6 @@ public class Data {
         perishables.addBefore(p);
         if (perishables.size() == 2)
             perishables.advanceBackward();
-//            return;
-//        }
-//
-//        int iter = 0;
-//        final Perishable first = perishables.curr();
-//        while(perishables.curr().getTS() % MS_PER_DAY == lastTS % MS_PER_DAY) {
-//            perishables.advanceForward();
-//            iter++;
-//            if(perishables.curr() == first)
-//                break;
-//        }
-//        perishables.addBefore(p);
-//        for(int i = 0; i < iter; i++)
-//            perishables.advanceBackward();
     }
 
     public void addComment(Comment comment) {
@@ -101,14 +87,6 @@ public class Data {
         // Remove expired data
         if (noOfFullDay > 0) {
             final int size = perishables.size();
-
-//            for(int i = 0; i < size; i++) {
-//                if(perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
-//                    removePost((Post) perishables.curr());
-//                } else {
-//                    perishables.advanceForward();
-//                }
-//            }
 
             perishables.markIf(p -> {
                 if (p instanceof Post && ((Post) p).getTotalScore() == 0) {

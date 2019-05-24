@@ -1,12 +1,11 @@
 package fise2.hpp.ok.structs;
 
+import com.google.common.collect.MinMaxPriorityQueue;
 import fise2.hpp.ok.events.Comment;
 import fise2.hpp.ok.events.Post;
 import fise2.hpp.ok.interfaces.Perishable;
 import fise2.hpp.ok.utils.CircularList;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,13 +39,15 @@ public class Data {
     private void addInCircularAtLastOfSameTS(Perishable p) {
         //if(perishables.isEmpty()) {
         perishables.addBefore(p);
-        if (perishables.size() == 2)
+        if (perishables.size() == 2) {
             perishables.advanceBackward();
+        }
     }
 
     public void addComment(Comment comment) {
-        if(comment.answered == null)
+        if (comment.answered == null) {
             return;
+        }
 
         Post parent = comment.getParentPost();
         if (parent.score <= 0) {
@@ -118,7 +119,7 @@ public class Data {
     }
 
     public void expireAt() {
-        if(perishables.isEmpty() || !testExact) {
+        if (perishables.isEmpty() || !testExact) {
             return;
         }
 
@@ -147,18 +148,13 @@ public class Data {
     public Top3 getTop3() {
         Top3 top3 = new Top3();
 
-        ArrayList<Post> list = new ArrayList<>(posts.values());
-
-        Collections.sort(list);
-
-        if (list.size() > 0) {
-            top3.data[0] = new Top3.PostData(list.get(0));
-        }
-        if (list.size() > 1) {
-            top3.data[1] = new Top3.PostData(list.get(1));
-        }
-        if (list.size() > 2) {
-            top3.data[2] = new Top3.PostData(list.get(2));
+        MinMaxPriorityQueue<Post> q = MinMaxPriorityQueue.maximumSize(3).create();
+        q.addAll(posts.values());
+        for (int i = 0; i < 3; i++) {
+            if (q.isEmpty()) {
+                break;
+            }
+            top3.data[i] = new Top3.PostData(q.poll());
         }
 
         return top3;

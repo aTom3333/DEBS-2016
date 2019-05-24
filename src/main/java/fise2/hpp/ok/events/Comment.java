@@ -2,7 +2,9 @@ package fise2.hpp.ok.events;
 
 import fise2.hpp.ok.interfaces.Answerable;
 import fise2.hpp.ok.interfaces.Perishable;
+import fise2.hpp.ok.structs.Data;
 import fise2.hpp.ok.structs.User;
+import fise2.hpp.ok.utils.Utils;
 
 public class Comment implements Answerable, Perishable {
 
@@ -42,5 +44,27 @@ public class Comment implements Answerable, Perishable {
     @Override
     public void perish(int amount) {
         score = Math.max(0, score - amount);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "comment_id=" + comment_id +
+                ", ts=" + Utils.TSToString(ts) +
+                ", comment='" + comment + '\'' +
+                ", commentator=" + commentator +
+                ", score=" + score +
+                '}';
+    }
+
+    @Override
+    public boolean updateScore(long ts) {
+        int numdays = (int) ((ts - this.ts) / Data.MS_PER_DAY);
+        int new_score = Math.max(10 - numdays, 0);
+        if(new_score != score) {
+            score = new_score;
+            return true;
+        }
+        return false;
     }
 }

@@ -9,4 +9,6 @@ public interface Perishable {
      * @param amount The amount to decrement
      */
     public void perish(int amount);
+
+    boolean updateScore(long ts);
 }

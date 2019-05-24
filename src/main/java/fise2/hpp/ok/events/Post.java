@@ -2,7 +2,9 @@ package fise2.hpp.ok.events;
 
 import fise2.hpp.ok.interfaces.Answerable;
 import fise2.hpp.ok.interfaces.Perishable;
+import fise2.hpp.ok.structs.Data;
 import fise2.hpp.ok.structs.User;
+import fise2.hpp.ok.utils.Utils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +48,7 @@ public class Post implements Answerable, Perishable {
     @Override
     public String toString() {
         return "Post{" +
-                "ts=" + ts +
+                "ts=" + Utils.TSToString(ts) +
                 ", post_id=" + post_id +
                 ", post='" + post + '\'' +
                 ", poster=" + poster +
@@ -63,5 +65,16 @@ public class Post implements Answerable, Perishable {
             }
         }
         return users.size();
+    }
+
+    @Override
+    public boolean updateScore(long ts) {
+        int numdays = (int) ((ts - this.ts) / Data.MS_PER_DAY);
+        int new_score = Math.max(10 - numdays, 0);
+        if(new_score != score) {
+            score = new_score;
+            return true;
+        }
+        return false;
     }
 }

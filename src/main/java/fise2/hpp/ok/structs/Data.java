@@ -74,7 +74,7 @@ public class Data {
     public void removePost(Post post) {
         posts.remove(post.post_id);
         int size = perishables.size();
-        perishables.removeIf(p -> {
+        perishables.markIf(p -> {
             return post.relatedComments.contains(p);
         });
         for (Comment c : post.relatedComments)
@@ -149,13 +149,15 @@ public class Data {
                 }
             }
 
-//            perishables.removeIf(p ->{
-//                if (p instanceof Post && ((Post) p).getTotalScore() == 0) {
-//                    removePost((Post) p);
-//                    return true;
-//                }
-//                return false;
-//            });
+            perishables.markIf(p -> {
+                if(p instanceof Post && ((Post) p).getTotalScore() == 0) {
+                    removePost((Post) p);
+                    return true;
+                }
+                return false;
+            });
+
+            perishables.swipeMarked();
             lastTS = timestamp;
             return;
         }
@@ -165,11 +167,12 @@ public class Data {
         for (int i = 0; i < iter; i++) {
             if (perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
                 removePost((Post) perishables.curr());
-                perishables.removeCurr();
-            } else {
-                perishables.advanceForward();
+                perishables.markCurrent();
             }
+            perishables.advanceForward();
         }
+
+        perishables.swipeMarked();
 
         lastTS = timestamp;
     }

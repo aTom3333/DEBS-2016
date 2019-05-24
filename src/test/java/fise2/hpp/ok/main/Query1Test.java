@@ -62,6 +62,7 @@ public class Query1Test {
 
     @Test
     public void Q1Case3() throws IOException, URISyntaxException, InterruptedException {
+        // Le test attend la suppression automatique, qui n'est pas faite
         Query1 q = new Query1("Q1Case3", "output/Q1Case3/output.txt");
         q.run();
         compareFiles("Q1Case3/_expectedQ1.txt", "output/Q1Case3/output.txt");
@@ -76,6 +77,7 @@ public class Query1Test {
 
     @Test
     public void Q1Case5() throws IOException, URISyntaxException, InterruptedException {
+        // Le test attend la suppression automatique, qui n'est pas faite
         Query1 q = new Query1("Q1Case5", "output/Q1Case5/output.txt");
         q.run();
         compareFiles("Q1Case5/_expectedQ1.txt", "output/Q1Case5/output.txt");

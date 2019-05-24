@@ -12,7 +12,7 @@ import java.util.Map;
 public class Data {
     public CircularList<Perishable> perishables = new CircularList<>();
 
-    private static int MS_PER_DAY = 24 * 60 * 60 * 1000;
+    public static int MS_PER_DAY = 24 * 60 * 60 * 1000;
 
     public Map<Integer, User> users = new HashMap<>();
 
@@ -37,22 +37,24 @@ public class Data {
     }
 
     private void addInCircularAtLastOfSameTS(Perishable p) {
-        if(perishables.isEmpty()) {
-            perishables.addBefore(p);
-            return;
-        }
-
-        int iter = 0;
-        final Perishable first = perishables.curr();
-        while(perishables.curr().getTS() % MS_PER_DAY == lastTS % MS_PER_DAY) {
-            perishables.advanceForward();
-            iter++;
-            if(perishables.curr() == first)
-                break;
-        }
+        //if(perishables.isEmpty()) {
         perishables.addBefore(p);
-        for(int i = 0; i < iter + 1; i++)
+        if (perishables.size() == 2)
             perishables.advanceBackward();
+//            return;
+//        }
+//
+//        int iter = 0;
+//        final Perishable first = perishables.curr();
+//        while(perishables.curr().getTS() % MS_PER_DAY == lastTS % MS_PER_DAY) {
+//            perishables.advanceForward();
+//            iter++;
+//            if(perishables.curr() == first)
+//                break;
+//        }
+//        perishables.addBefore(p);
+//        for(int i = 0; i < iter; i++)
+//            perishables.advanceBackward();
     }
 
     public void addComment(Comment comment) {
@@ -74,7 +76,7 @@ public class Data {
     public void removePost(Post post) {
         posts.remove(post.post_id);
         int size = perishables.size();
-        perishables.removeIf(p -> {
+        perishables.markIf(p -> {
             return post.relatedComments.contains(p);
         });
         for (Comment c : post.relatedComments)
@@ -82,85 +84,58 @@ public class Data {
     }
 
     public void expireUntil(long timestamp) {
-        testExact = (lastTS != timestamp);
-
-        if (perishables.isEmpty()) {
+        if (perishables.isEmpty() || timestamp <= lastTS) {
             lastTS = timestamp;
             return;
         }
 
         final long noOfFullDay = (timestamp - lastTS) / MS_PER_DAY;
-        final long lastDayTS = lastTS % MS_PER_DAY; // Number of ms since midnight
-        final long currentDayTS = timestamp % MS_PER_DAY; // Number of ms since midnight
-
-        if (noOfFullDay > 0) {
-            perishables.forEach(p -> {
-                if(currentDayTS == lastDayTS && p.getTS() % MS_PER_DAY == currentDayTS)
-                    p.perish((int) noOfFullDay - 1);
-                else
-                    p.perish((int) noOfFullDay);
-            });
-        }
-
-        final Perishable first = perishables.curr();
 
         int iter = 0;
 
-
-        if (lastDayTS < currentDayTS) {
-            if (first.getTS() % MS_PER_DAY > lastDayTS
-                    && first.getTS() % MS_PER_DAY < currentDayTS) {
-                first.perish(1);
-                perishables.advanceForward();
-                iter++;
-            }
-            while (perishables.curr() != first
-                    && perishables.curr().getTS() % MS_PER_DAY > lastDayTS
-                    && perishables.curr().getTS() % MS_PER_DAY < currentDayTS) {
-                perishables.curr().perish(1);
-                perishables.advanceForward();
-                iter++;
-            }
-        } else if(lastDayTS > currentDayTS) {
-            if (first.getTS() % MS_PER_DAY > lastDayTS
-                    || first.getTS() % MS_PER_DAY < currentDayTS) {
-                first.perish(1);
-                perishables.advanceForward();
-                iter++;
-            }
-            while (perishables.curr() != first
-                    && (perishables.curr().getTS() % MS_PER_DAY > lastDayTS
-                    || perishables.curr().getTS() % MS_PER_DAY < currentDayTS)) {
-                perishables.curr().perish(1);
-                perishables.advanceForward();
-                iter++;
-            }
+        while (perishables.curr().updateScore(timestamp - 1)) {
+            iter++;
+            perishables.advanceForward();
         }
 
         // Remove expired data
         if (noOfFullDay > 0) {
-            perishables.forEach(p -> {
-                if (p instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
-                    removePost((Post) perishables.curr());
-                    perishables.removeCurr();
-                }
-            });
-            lastTS = timestamp;
-            return;
-        }
+            final int size = perishables.size();
 
-        for (int i = 0; i < iter; i++)
-            perishables.advanceBackward();
-        for (int i = 0; i < iter; i++) {
-            if (perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
-                removePost((Post) perishables.curr());
-                perishables.removeCurr();
-            } else {
+//            for(int i = 0; i < size; i++) {
+//                if(perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
+//                    removePost((Post) perishables.curr());
+//                } else {
+//                    perishables.advanceForward();
+//                }
+//            }
+
+            perishables.markIf(p -> {
+                if (p instanceof Post && ((Post) p).getTotalScore() == 0) {
+                    removePost((Post) p);
+                    return true;
+                }
+                return false;
+            });
+
+            perishables.swipeMarked();
+            lastTS = timestamp;
+        } else {
+
+            for (int i = 0; i < iter; i++)
+                perishables.advanceBackward();
+            for (int i = 0; i < iter; i++) {
+                if (perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
+                    removePost((Post) perishables.curr());
+                    perishables.markCurrent();
+                }
                 perishables.advanceForward();
             }
-        }
 
-        lastTS = timestamp;
+            perishables.swipeMarked();
+
+            lastTS = timestamp;
+        }
     }
 
     public void expireAt() {
@@ -168,23 +143,13 @@ public class Data {
             return;
         }
 
-        final Perishable first = perishables.curr();
-
         int iter = 0;
 
-        final long lastDayTS = lastTS % MS_PER_DAY; // Number of ms since midnight
+        while (perishables.curr().updateScore(lastTS)) {
+            iter++;
+            perishables.advanceForward();
+        }
 
-        if (first.getTS() % MS_PER_DAY == lastDayTS && first.getTS() < lastTS) {
-            first.perish(1);
-            perishables.advanceForward();
-            iter++;
-        }
-        while (perishables.curr() != first
-                && perishables.curr().getTS() % MS_PER_DAY == lastDayTS) {
-            perishables.curr().perish(1);
-            perishables.advanceForward();
-            iter++;
-        }
 
         // Remove expired data
         for (int i = 0; i < iter; i++)
@@ -205,7 +170,14 @@ public class Data {
 
         ArrayList<Post> list = new ArrayList<>(posts.values());
 
-        list.sort((a, b) -> b.getTotalScore() - a.getTotalScore());
+        list.sort((a, b) -> {
+            int r = b.getTotalScore() - a.getTotalScore();
+            if (r != 0) {
+                return r;
+            }
+            r = (int) (b.getTS() - a.getTS());
+            return r;
+        });
 
         if (list.size() > 0) {
             top3.data[0] = new Top3.PostData(list.get(0));

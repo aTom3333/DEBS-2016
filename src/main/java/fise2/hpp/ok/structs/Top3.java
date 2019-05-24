@@ -56,7 +56,7 @@ public class Top3 {
     }
 
     public static class PostData {
-        public int post_id;
+        public long post_id;
         public String user;
         public int score;
         public int commenters;

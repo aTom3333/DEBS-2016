@@ -7,15 +7,15 @@ import java.util.Objects;
 public class Post implements Event {
 
     public long ts;
-    public int post_id;
-    public int user_id;
+    public long post_id;
+    public long user_id;
     public String post;
     public String user;
 
     public Post() {
     }
 
-    public Post(long ts, int post_id, int user_id, String post, String user) {
+    public Post(long ts, long post_id, long user_id, String post, String user) {
         this.ts = ts;
         this.post_id = post_id;
         this.user_id = user_id;

@@ -8,7 +8,7 @@ import fise2.hpp.ok.utils.Utils;
 
 public class Comment implements Answerable, Perishable {
 
-    public final int comment_id;
+    public final long comment_id;
     public final String comment;
     public long ts = 0;
     public User commentator;
@@ -16,7 +16,7 @@ public class Comment implements Answerable, Perishable {
 
     public int score = 10;
 
-    public Comment(long ts, int comment_id, User commentator, String comment, Answerable answered) {
+    public Comment(long ts, long comment_id, User commentator, String comment, Answerable answered) {
         this.ts = ts;
         this.comment_id = comment_id;
         this.answered = answered;

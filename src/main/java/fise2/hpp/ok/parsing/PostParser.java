@@ -21,8 +21,8 @@ public class PostParser extends AbstractParser {
         Post post = new Post();
         String[] line = Utils.splitLine(s);
         post.ts = Utils.stringToTS(line[0]);
-        post.post_id = Integer.valueOf(line[1]);
-        post.user_id = Integer.valueOf(line[2]);
+        post.post_id = Long.valueOf(line[1]);
+        post.user_id = Long.valueOf(line[2]);
         post.post = line[3];
         post.user = line[4];
 

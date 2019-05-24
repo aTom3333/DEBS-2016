@@ -22,8 +22,8 @@ public class FriendshipParser extends AbstractParser {
         Friendship friendship = new Friendship();
         String[] line = Utils.splitLine(s);
         friendship.ts = Utils.stringToTS(line[0]);
-        friendship.user_id_1 = Integer.valueOf(line[1]);
-        friendship.user_id_2 = Integer.valueOf(line[2]);
+        friendship.user_id_1 = Long.valueOf(line[1]);
+        friendship.user_id_2 = Long.valueOf(line[2]);
 
         return friendship;
     }

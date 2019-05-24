@@ -7,17 +7,17 @@ import java.util.Objects;
 public class Comment implements Event {
 
     public long ts;
-    public int comment_id;
-    public int user_id;
+    public long comment_id;
+    public long user_id;
     public String comment;
     public String user;
-    public Integer comment_replied = null;
-    public Integer post_replied = null;
+    public Long comment_replied = null;
+    public Long post_replied = null;
 
     public Comment() {
     }
 
-    public Comment(long ts, int comment_id, int user_id, String comment, String user, Integer comment_replied, Integer post_replied) {
+    public Comment(long ts, long comment_id, long user_id, String comment, String user, Long comment_replied, Long post_replied) {
         this.ts = ts;
         this.comment_id = comment_id;
         this.user_id = user_id;

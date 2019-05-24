@@ -104,10 +104,4 @@ public class Query1Test {
         compareFiles("Q1PostExpiredComment2/_expectedQ1.txt", "output/Q1PostExpiredComment2/output.txt");
     }
 
-    @Test
-    public void sampleTest() throws IOException, URISyntaxException, InterruptedException {
-        Query1 q = new Query1("sample", "output/sample/output.txt");
-        q.run();
-        compareFiles("sample/_expectedAXEL.txt", "output/sample/output.txt");
-    }
 }

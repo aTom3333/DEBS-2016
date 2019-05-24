@@ -7,13 +7,13 @@ import java.util.Objects;
 public class Friendship implements Event {
 
     public long ts;
-    public int user_id_1;
-    public int user_id_2;
+    public long user_id_1;
+    public long user_id_2;
 
     public Friendship() {
     }
 
-    public Friendship(long ts, int user_id_1, int user_id_2) {
+    public Friendship(long ts, long user_id_1, long user_id_2) {
         this.ts = ts;
         this.user_id_1 = user_id_1;
         this.user_id_2 = user_id_2;

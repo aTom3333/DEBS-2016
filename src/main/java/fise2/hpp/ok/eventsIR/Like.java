@@ -7,13 +7,13 @@ import java.util.Objects;
 public class Like implements Event {
 
     public long ts;
-    public int user_id;
-    public int comment_id;
+    public long user_id;
+    public long comment_id;
 
     public Like() {
     }
 
-    public Like(long ts, int user_id, int comment_id) {
+    public Like(long ts, long user_id, long comment_id) {
         this.ts = ts;
         this.user_id = user_id;
         this.comment_id = comment_id;

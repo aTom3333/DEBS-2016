@@ -6,6 +6,7 @@ import fise2.hpp.ok.interfaces.Perishable;
 import fise2.hpp.ok.utils.CircularList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +15,11 @@ public class Data {
 
     public static int MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-    public Map<Integer, User> users = new HashMap<>();
+    public Map<Long, User> users = new HashMap<>();
 
-    public Map<Integer, Post> posts = new HashMap<>();
+    public Map<Long, Post> posts = new HashMap<>();
 
-    public Map<Integer, Comment> comments = new HashMap<>();
+    public Map<Long, Comment> comments = new HashMap<>();
 
     public Data() {
     }
@@ -170,13 +171,7 @@ public class Data {
 
         ArrayList<Post> list = new ArrayList<>(posts.values());
 
-        list.sort((a, b) -> {
-            int r = b.getTotalScore() - a.getTotalScore();
-            if(r != 0)
-                return r;
-            r = (int) (b.getTS() - a.getTS());
-            return r;
-        });
+        Collections.sort(list);
 
         if (list.size() > 0) {
             top3.data[0] = new Top3.PostData(list.get(0));

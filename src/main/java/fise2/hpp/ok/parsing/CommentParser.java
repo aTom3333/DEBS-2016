@@ -23,17 +23,17 @@ public class CommentParser extends AbstractParser {
 
         comment.ts = Utils.stringToTS(line[0]);
 
-        comment.comment_id = Integer.valueOf(line[1]);
-        comment.user_id = Integer.valueOf(line[2]);
+        comment.comment_id = Long.valueOf(line[1]);
+        comment.user_id = Long.valueOf(line[2]);
 
         comment.comment = line[3];
         comment.user = line[4];
 
         if(!line[5].isEmpty())
-            comment.comment_replied = Integer.valueOf(line[5]);
+            comment.comment_replied = Long.valueOf(line[5]);
 
         if(!line[6].isEmpty())
-            comment.post_replied = Integer.valueOf(line[6]);
+            comment.post_replied = Long.valueOf(line[6]);
 
         return comment;
     }

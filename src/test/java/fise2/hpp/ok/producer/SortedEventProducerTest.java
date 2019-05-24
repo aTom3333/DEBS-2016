@@ -30,11 +30,11 @@ public class SortedEventProducerTest {
 
         Event[] expected = {
                 new Post(timestamp_base, 1, 1, "Premier post", "user"),
-                new Comment(timestamp_base + 5 * 60 * 1000, 1, 1, "Premier commentaire", "user", null, 1),
-                new Comment(timestamp_base + 6 * 60 * 1000, 2, 1, "Réponse commentaire", "user", 1, null),
+                new Comment(timestamp_base + 5 * 60 * 1000, 1l, 1l, "Premier commentaire", "user", null, 1l),
+                new Comment(timestamp_base + 6 * 60 * 1000, 2l, 1l, "Réponse commentaire", "user", 1l, null),
                 new Post(timestamp_base + 7 * 60 * 1000, 2, 1, "Deuxième post", "user"),
-                new Comment(timestamp_base + 8 * 60 * 1000, 3, 1, "Premier commentaire sur post 2", "user", null, 2),
-                new Comment(timestamp_base + 9 * 60 * 1000, 4, 1, "Deuxième commentaire", "user", null, 1),
+                new Comment(timestamp_base + 8 * 60 * 1000, 3, 1, "Premier commentaire sur post 2", "user", null, 2l),
+                new Comment(timestamp_base + 9 * 60 * 1000, 4, 1, "Deuxième commentaire", "user", null, 1l),
         };
 
         producer.run();

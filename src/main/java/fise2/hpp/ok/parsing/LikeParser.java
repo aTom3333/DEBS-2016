@@ -21,8 +21,8 @@ public class LikeParser extends AbstractParser {
         Like like = new Like();
         String[] line = Utils.splitLine(s);
         like.ts = Utils.stringToTS(line[0]);
-        like.user_id = Integer.valueOf(line[1]);
-        like.comment_id = Integer.valueOf(line[2]);
+        like.user_id = Long.valueOf(line[1]);
+        like.comment_id = Long.valueOf(line[2]);
 
         return like;
     }

@@ -17,6 +17,8 @@ public class SortedEventProducer implements Runnable {
 
     private AbstractParser[] parsers;
 
+    private int counter = 0;
+
     public SortedEventProducer(BlockingQueue<Event> q, Event.Type[] requestedTypes, Reader[] associatedReaders) {
         queue = q;
         setup(requestedTypes, associatedReaders);
@@ -79,7 +81,7 @@ public class SortedEventProducer implements Runnable {
     public void run() {
         try {
             prefillBuffer();
-            while (insertAndRefill()) ;
+            while(insertAndRefill()) System.out.println(counter++);
             queue.put(new PoisonPill());
         } catch (InterruptedException | IOException | ParseException e) {
             e.printStackTrace();

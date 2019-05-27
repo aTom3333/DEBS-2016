@@ -19,6 +19,7 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
     public final Set<Comment> relatedComments = new HashSet<>(); // For faster lookup
 
     public int score = 10;
+    public int totalScore = 10;
 
     public Post(long ts, long post_id, User poster, String post) {
         this.post_id = post_id;
@@ -73,6 +74,7 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
         int numdays = (int) ((ts - this.ts) / Data.MS_PER_DAY);
         int new_score = Math.max(10 - numdays, 0);
         if (new_score != score) {
+            totalScore -= (score - new_score);
             score = new_score;
             return true;
         }
@@ -83,7 +85,7 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
     public int compareTo(Post post) {
 
         return new CompareToBuilder()
-                .append(post.getTotalScore(), getTotalScore())
+                .append(totalScore, totalScore)
                 .append(post.getTS(), getTS())
                 .toComparison();
     }

@@ -1,11 +1,12 @@
 package fise2.hpp.ok.structs;
 
-import com.google.common.collect.MinMaxPriorityQueue;
 import fise2.hpp.ok.events.Comment;
 import fise2.hpp.ok.events.Post;
 import fise2.hpp.ok.interfaces.Perishable;
 import fise2.hpp.ok.utils.CircularList;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ public class Data {
 
     public Map<Long, Comment> comments = new HashMap<>();
 
+    public ArrayList<Post> sortedPost = new ArrayList<>();
+
     public Data() {
     }
 
@@ -28,12 +31,49 @@ public class Data {
 
     public Post[] oldTop3;
 
+    public int indexFor(Post p) {
+        final int index = Collections.binarySearch(sortedPost, p);
+        if(index < 0)
+            return index;
+        if(sortedPost.get(index) == p)
+            return index;
+        int copy = index;
+        while(copy > 0 && sortedPost.get(copy).compareTo(sortedPost.get(copy - 1)) == 0) {
+            copy--;
+            if(sortedPost.get(copy) == p)
+                return copy;
+        }
+        while(copy < sortedPost.size() - 1 && sortedPost.get(copy).compareTo(sortedPost.get(copy + 1)) == 0) {
+            copy++;
+            if(sortedPost.get(copy) == p)
+                return copy;
+        }
+        return index;
+    }
+
     public void addPost(Post post) {
         posts.put(post.post_id, post);
 
         expireAt();
 
+        final int index = indexFor(post);
+        if(index < 0)
+            sortedPost.add(-(index + 1), post);
+        else
+            sortedPost.add(index, post);
+
         addInCircularAtLastOfSameTS(post);
+    }
+
+    private void resort(int index) {
+        while(index > 0 && sortedPost.get(index).compareTo(sortedPost.get(index - 1)) > 0) {
+            Collections.swap(sortedPost, index, index - 1);
+            index--;
+        }
+        while(index < sortedPost.size() - 1 && sortedPost.get(index).compareTo(sortedPost.get(index + 1)) > 0) {
+            Collections.swap(sortedPost, index, index + 1);
+            index++;
+        }
     }
 
     private void addInCircularAtLastOfSameTS(Perishable p) {
@@ -50,11 +90,15 @@ public class Data {
         }
 
         Post parent = comment.getParentPost();
+        int post_index = indexFor(parent);
         if (parent.score <= 0) {
             return; // Si le post est déjà expiré, on ne retient pas le commentaire
         }
         comments.put(comment.comment_id, comment);
         parent.relatedComments.add(comment);
+        parent.totalScore += 10;
+
+        resort(post_index);
 
         expireAt();
 
@@ -62,6 +106,9 @@ public class Data {
     }
 
     public void removePost(Post post) {
+        int index = Collections.binarySearch(sortedPost, post);
+        if(index >= 0)
+            sortedPost.remove(index);
         posts.remove(post.post_id);
         int size = perishables.size();
         perishables.markIf(p -> {
@@ -91,9 +138,14 @@ public class Data {
             final int size = perishables.size();
 
             perishables.markIf(p -> {
-                if (p instanceof Post && ((Post) p).getTotalScore() == 0) {
-                    removePost((Post) p);
-                    return true;
+                if(p instanceof Post) {
+                    int index = Collections.binarySearch(sortedPost, (Post) p);
+                    if(index >= 0)
+                        resort(index);
+                    if(((Post) p).totalScore == 0) {
+                        removePost((Post) p);
+                        return true;
+                    }
                 }
                 return false;
             });
@@ -105,9 +157,12 @@ public class Data {
             for (int i = 0; i < iter; i++)
                 perishables.advanceBackward();
             for (int i = 0; i < iter; i++) {
-                if (perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
-                    removePost((Post) perishables.curr());
-                    perishables.markCurrent();
+                if(perishables.curr() instanceof Post) {
+                    resort(indexFor((Post) perishables.curr()));
+                    if(((Post) perishables.curr()).totalScore == 0) {
+                        removePost((Post) perishables.curr());
+                        perishables.markCurrent();
+                    }
                 }
                 perishables.advanceForward();
             }
@@ -135,12 +190,14 @@ public class Data {
         for (int i = 0; i < iter; i++)
             perishables.advanceBackward();
         for (int i = 0; i < iter; i++) {
-            if (perishables.curr() instanceof Post && ((Post) perishables.curr()).getTotalScore() == 0) {
-                removePost((Post) perishables.curr());
-                perishables.removeCurr();
-            } else {
-                perishables.advanceForward();
+            if(perishables.curr() instanceof Post) {
+                resort(indexFor((Post) perishables.curr()));
+                if(((Post) perishables.curr()).totalScore == 0) {
+                    removePost((Post) perishables.curr());
+                    perishables.markCurrent();
+                }
             }
+            perishables.advanceForward();
         }
     }
 
@@ -148,13 +205,17 @@ public class Data {
     public Top3 getTop3() {
         Top3 top3 = new Top3();
 
-        MinMaxPriorityQueue<Post> q = MinMaxPriorityQueue.maximumSize(3).create();
-        q.addAll(posts.values());
-        for (int i = 0; i < 3; i++) {
-            if (q.isEmpty()) {
-                break;
-            }
-            top3.data[i] = new Top3.PostData(q.poll());
+//        MinMaxPriorityQueue<Post> q = MinMaxPriorityQueue.maximumSize(3).create();
+//        q.addAll(posts.values());
+//        for (int i = 0; i < 3; i++) {
+//            if (q.isEmpty()) {
+//                break;
+//            }
+//            top3.data[i] = new Top3.PostData(q.poll());
+//        }
+        for(int i = 0; i < 3; i++) {
+            if(sortedPost.size() > i)
+                top3.data[i] = new Top3.PostData(sortedPost.get(i));
         }
 
         return top3;

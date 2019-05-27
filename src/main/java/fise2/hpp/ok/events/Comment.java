@@ -62,6 +62,7 @@ public class Comment implements Answerable, Perishable {
         int numdays = (int) ((ts - this.ts) / Data.MS_PER_DAY);
         int new_score = Math.max(10 - numdays, 0);
         if (new_score != score) {
+            getParentPost().totalScore -= (score - new_score);
             score = new_score;
             return true;
         }

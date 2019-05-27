@@ -55,7 +55,7 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
                 ", post='" + post + '\'' +
                 ", poster=" + poster +
                 ", relatedComments=" + relatedComments +
-                ", score=" + score +
+                ", score=" + totalScore +
                 '}';
     }
 
@@ -85,8 +85,8 @@ public class Post implements Answerable, Perishable, Comparable<Post> {
     public int compareTo(Post post) {
 
         return new CompareToBuilder()
-                .append(totalScore, totalScore)
-                .append(post.getTS(), getTS())
+                .append(post.totalScore, totalScore)
+                .append(post.getTS(), getTS()) // TODO Add ts of last comment
                 .toComparison();
     }
 }

@@ -66,7 +66,10 @@ public class Data {
     }
 
     private void resort(int index) {
-        while(index > 0 && sortedPost.get(index).compareTo(sortedPost.get(index - 1)) > 0) {
+        if(index < 0)
+            System.out.println("lol");
+
+        while(index > 0 && sortedPost.get(index).compareTo(sortedPost.get(index - 1)) < 0) {
             Collections.swap(sortedPost, index, index - 1);
             index--;
         }
